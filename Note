@@ -1,0 +1,6 @@
+1. install dependency
+pip3 install flask opencv-python pillow numpy
+
+2. run with this command
+FLASK_RUN_PORT=8000 FLASK_DEBUG=1 FLASK_APP=run.py flask run
+
