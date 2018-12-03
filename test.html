@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html>
+<header>
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+</header>
+
+<body>
+    <input type="file" id="file-input" onchange="selectFile()">
+    <button onclick="submit()">Upload</button>
+    <script>
+        var base64_image = ''
+        function selectFile() {
+            var file = document.getElementById("file-input").files[0]
+            var reader = new FileReader();
+
+            reader.addEventListener("load", function () {
+                console.log(reader.result)
+                base64_image = reader.result;
+            }, false)
+
+            if (file) {
+                if (!file) {
+                    alert("select image first")
+                } else {
+                    reader.readAsDataURL(file)
+                }
+            }
+        }
+        function submit() {
+            if (!base64_image) {
+                alert("select image first!")
+                return;
+            } else {
+                var body = new FormData();
+                body.set('image', base64_image)
+                axios({
+                    method: 'post',
+                    url: 'http://localhost:8000',
+                    data: body,
+                    config: { headers: { 'Content-Type': 'multipart/form-data' } }
+                }).then(function (response) {
+                        //handle success
+                        console.log(response);
+                    })
+                    .catch(function (response) {
+                        //handle error
+                        console.log(response);
+                    });
+            }
+        }
+    </script>
+</body>
+
+</html>

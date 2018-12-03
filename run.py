@@ -1,4 +1,5 @@
 from flask import Flask, request
+from flask_cors import CORS
 from utils import base64_to_image
 import cv2
 from DetectorAPI import DetectorAPI
@@ -6,6 +7,7 @@ from DetectorAPI import DetectorAPI
 threshold = 0.4
 
 app = Flask(__name__)
+CORS(app)
 
 model_path = '/home/samoooop/workspace/flask/frozen_inference_graph.pb'
 odapi = DetectorAPI(path_to_ckpt=model_path)
