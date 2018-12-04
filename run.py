@@ -1,4 +1,4 @@
-from flask import Flask, request
+from flask import Flask, request, jsonify
 from flask_cors import CORS
 from utils import base64_to_image
 import cv2
@@ -39,13 +39,22 @@ def hello():
         (255,1,255),
         (255,255,1)
     ]
+    mood_count = [0, 0, 0, 0, 0, 0, 0]
     for i in range(len(boxes)):
         # Class 1 represents human
         print(scores[i])
         if scores[i] > threshold:
             box = boxes[i]
+            mood_count[classes[i]] += 1
             cv2.rectangle(img,(box[1],box[0]),(box[3],box[2]),colors[classes[i] - 1],2)
-    cv2.imwrite("test2.jpg", img)
-
+    cv2.imwrite("test.jpg", img)
+    result = jsonify(
+        common = mood_count[1],
+        stress = mood_count[2],
+        sad = mood_count[3],
+        angry = mood_count[4],
+        sleep = mood_count[5],
+        happy = mood_count[6],
+    )
     # cv2.imwrite("test.jpg", img)
-    return "ok"
+    return result
